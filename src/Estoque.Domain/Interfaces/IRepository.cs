@@ -10,7 +10,7 @@ namespace Estoque.Domain.Interfaces
 {
     public interface IRepository<T> where T : Entity
     {
-        void Add(T entity);
+        void Insert(T entity);
         void Update( T entity);
         void Delete(long id);
         T? GetById(long id);

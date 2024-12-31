@@ -14,6 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\src\Estoque.Application\Estoque.Application.csproj" />
+    <ProjectReference Include="..\src\Estoque.Infra.Crosscutting.IoC\Estoque.Infra.Crosscutting.IoC.csproj" />
     <ProjectReference Include="..\src\Estoque.Infra.Data\Estoque.Infra.Data.csproj" />
   </ItemGroup>
 

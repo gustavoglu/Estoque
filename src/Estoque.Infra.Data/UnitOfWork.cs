@@ -1,15 +1,13 @@
 ﻿using Estoque.Domain.Interfaces;
+using Estoque.Domain.Notifications;
+using MediatR;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Estoque.Infra.Data
 {
     public class UnitOfWork(SQLContext context,
-                            ILogger<UnitOfWork> logger) : IUnitOfWork
+                            ILogger<UnitOfWork> logger,
+                            IMediator mediator) : IUnitOfWork
     {
 
         public bool SaveChanges()
@@ -21,7 +19,9 @@ namespace Estoque.Infra.Data
             }
             catch (Exception ex)
             {
-                logger.LogError($"An error occurred and the database could not be updated, error: {ex.Message}", ex);
+                string message = $"An error occurred and the database could not be updated, error: {ex.Message}";
+                logger.LogError(message, ex);
+                mediator.Publish(new DomainNotification(nameof(UnitOfWork), message));
                 return false;
             }
         }

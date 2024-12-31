@@ -7,13 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Validations\**" />
-    <EmbeddedResource Remove="Validations\**" />
-    <None Remove="Validations\**" />
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="FluentValidation" Version="11.11.0" />
+    <PackageReference Include="mediatr" Version="12.4.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="12.4.1" />
+    <ProjectReference Include="..\Estoque.Domain\Estoque.Domain.csproj" />
   </ItemGroup>
 
 </Project>

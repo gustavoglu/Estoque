@@ -15,7 +15,7 @@ namespace Estoque.Infra.Data.Repositories
             SqlContext = sqlContext;
             DbSet = SqlContext.Set<T>();
         }
-        public void Add(T entity)
+        public void Insert(T entity)
         {
             DbSet.Add(entity);
         }
