@@ -1,0 +1,6 @@
+@Estoque.Presentation.Api_HostAddress = http://localhost:5160
+
+GET {{Estoque.Presentation.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
