@@ -1,6 +1,6 @@
 ﻿namespace Estoque.Domain.Entities
 {
-    public class Entity
+    public abstract class Entity
     {
         public Entity(long id, DateTime createAt, bool isDeleted)
         {

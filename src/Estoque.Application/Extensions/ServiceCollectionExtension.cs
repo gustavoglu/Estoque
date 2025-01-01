@@ -1,11 +1,9 @@
 ﻿using Estoque.Application.Handlers;
 using Estoque.Application.MapperProfiles;
+using Estoque.Application.Pipelines;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 
 namespace Estoque.Application.Extensions
 {
@@ -13,8 +11,11 @@ namespace Estoque.Application.Extensions
     {
         public static void AddApplication(this IServiceCollection services)
         {
-            services.AddMediatR(x => x.RegisterServicesFromAssembly(typeof(ProductHandler).Assembly));
+            services.AddMediatR(x => x.RegisterServicesFromAssembly(typeof(ProductHandler).Assembly)
+                                        .AddOpenBehavior(typeof(ValidationBehavior<,>)));
             services.AddAutoMapper(typeof(RequestToEntityProfile).Assembly);
+
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
 }

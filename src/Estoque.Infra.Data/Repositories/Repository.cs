@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace Estoque.Infra.Data.Repositories
 {
-    public class Repository<T> : IRepository<T> where T : Entity
+    public abstract class Repository<T> : IRepository<T> where T : Entity
     {
         protected SQLContext SqlContext { get; }
         protected DbSet<T> DbSet { get; }
