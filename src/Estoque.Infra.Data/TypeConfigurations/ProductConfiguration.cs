@@ -13,15 +13,19 @@ namespace Estoque.Infra.Data.TypeConfigurations
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {
-            builder.HasKey(x => x.Id);
+            builder.ToTable(nameof(Product));
 
-            builder.HasQueryFilter(x => x.IsDeleted);
+            builder.HasKey(x => x.Id);
+            
+            builder.HasQueryFilter(x => !x.IsDeleted);
 
             builder.Property(x => x.Description)
+                .HasColumnType("varchar(150)")
                 .HasMaxLength(150)
                 .IsRequired();
 
             builder.Property(x => x.Price)
+                .HasPrecision(18, 4)
                 .IsRequired();
 
             builder.HasOne(p => p.ProductType)
@@ -29,7 +33,7 @@ namespace Estoque.Infra.Data.TypeConfigurations
                 .HasForeignKey(p => p.ProductTypeId)
                 .OnDelete(DeleteBehavior.NoAction)
                 .IsRequired();
-                
+
         }
     }
 }

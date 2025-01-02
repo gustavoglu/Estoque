@@ -1,5 +1,6 @@
 ﻿
 using Estoque.Domain.Notifications;
+using Estoque.Presentation.Api.ViewModels;
 using MediatR;
 
 namespace Estoque.Presentation.Api.Middlewares
@@ -19,7 +20,8 @@ namespace Estoque.Presentation.Api.Middlewares
                 return;
 
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
-            await context.Response.WriteAsJsonAsync(new { Success = false, Errors = _notifications.Notifications });
+
+            await context.Response.WriteAsJsonAsync(new ApiResult(false, null, _notifications.Notifications.Select(err => $"{err.Type}, {err.Value}").ToList()));
         }
     }
 }

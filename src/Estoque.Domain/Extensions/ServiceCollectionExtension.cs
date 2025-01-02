@@ -1,4 +1,5 @@
 ﻿using Estoque.Domain.Notifications;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Estoque.Domain.Extensions
@@ -7,7 +8,7 @@ namespace Estoque.Domain.Extensions
     {
         public static void AddDomain(this IServiceCollection services)
         {
-            services.AddMediatR(x => x.RegisterServicesFromAssembly(typeof(DomainNotificationHandler).Assembly));
+            services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
         }
     }
 }

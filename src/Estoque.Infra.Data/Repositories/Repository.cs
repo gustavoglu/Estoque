@@ -1,6 +1,8 @@
 ﻿using Estoque.Domain.Entities;
 using Estoque.Domain.Interfaces;
+using Estoque.Domain.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using System.Linq.Expressions;
 
 
@@ -31,12 +33,16 @@ namespace Estoque.Infra.Data.Repositories
             return DbSet.AsNoTracking().ToList();
         }
 
-        public List<T> GetAllPaginated(int page, int limit)
+        public PaginationData<T> GetAllPaginated(int page, int limit)
         {
-            return DbSet.AsNoTracking()
-                        .Skip((page - 1) * limit)
-                        .Take(limit)
-                        .ToList();
+            var total = DbSet.LongCount();
+
+            var res = DbSet.AsNoTracking()
+                       .Skip((page - 1) * limit)
+                       .Take(limit)
+                       .ToList();
+
+            return new PaginationData<T>(res, page, limit, total);
         }
 
         public T? GetById(long id)
@@ -51,13 +57,17 @@ namespace Estoque.Infra.Data.Repositories
                        .ToList();
         }
 
-        public List<T> SearchPaginated(Expression<Func<T, bool>> expression, int page, int limit)
+        public PaginationData<T> SearchPaginated(Expression<Func<T, bool>> expression, int page, int limit)
         {
-            return DbSet.AsNoTracking()
+            var total = DbSet.LongCount(expression);
+
+            var res = DbSet.AsNoTracking()
                        .Where(expression)
                        .Skip((page - 1) * limit)
                        .Take(limit)
                        .ToList();
+
+            return new PaginationData<T>(res, page, limit, total);
         }
 
         public void Update(T entity)

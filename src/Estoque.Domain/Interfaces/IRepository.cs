@@ -1,10 +1,6 @@
 ﻿using Estoque.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Estoque.Domain.ViewModels;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Estoque.Domain.Interfaces
 {
@@ -15,8 +11,8 @@ namespace Estoque.Domain.Interfaces
         void Delete(long id);
         T? GetById(long id);
         List<T> GetAll();
-        List<T> GetAllPaginated(int page, int limit);
-        List<T> SearchPaginated(Expression<Func<T, bool>> expression, int page, int limit);
+        PaginationData<T> GetAllPaginated(int page, int limit);
+        PaginationData<T> SearchPaginated(Expression<Func<T, bool>> expression, int page, int limit);
         List<T> Search(Expression<Func<T, bool>> expression);
     }
 }

@@ -38,6 +38,7 @@ namespace Estoque.Infra.Data
 
             foreach (var entry in deletes)
             {
+                entry.Member("CreateAt").IsModified = false;
                 var entity = entry.Entity as Entity;
                 entity!.UpdateAt = DateTime.UtcNow;
                 entity!.IsDeleted = true;
@@ -49,8 +50,6 @@ namespace Estoque.Infra.Data
             var inserts = this.ChangeTracker.Entries()
                                                 .Where(entry => entry.Entity is Entity && 
                                                                  entry.State == EntityState.Added);
-
-
 
             foreach (var entry in inserts)
             {
@@ -67,6 +66,8 @@ namespace Estoque.Infra.Data
 
             foreach (var entry in updates)
             {
+                entry.Member("CreateAt").IsModified = false;
+                entry.Member("IsDeleted").IsModified = false;
                 var entity = entry.Entity as Entity;
                 entity!.UpdateAt = DateTime.UtcNow;
             }

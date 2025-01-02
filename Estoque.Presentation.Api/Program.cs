@@ -16,8 +16,9 @@ NativeInjection.InjectServices(builder.Services, builder.Configuration);
 
 var app = builder.Build();
 
-app.UseMiddleware<DomainNotificationMiddleware>();
+
 app.UseMiddleware<ExceptionMiddleware>();
+//app.UseMiddleware<DomainNotificationMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

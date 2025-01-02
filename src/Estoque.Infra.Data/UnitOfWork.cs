@@ -14,8 +14,7 @@ namespace Estoque.Infra.Data
         {
             try
             {
-                context.SaveChanges();
-                return true;
+                return context.SaveChanges() > 0;
             }
             catch (Exception ex)
             {

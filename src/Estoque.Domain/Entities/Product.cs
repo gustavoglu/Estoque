@@ -1,15 +1,19 @@
-﻿namespace Estoque.Domain.Entities
+﻿
+namespace Estoque.Domain.Entities
 {
-    public class Product(long id,
-                            DateTime createAt,
-                            bool isDeleted,
-                            string description,
-                            decimal price,
-                            long productTypeId) : Entity(id, createAt, isDeleted)
+    public class Product : Entity
     {
-        public string Description { get; private set; } = description;
-        public decimal Price { get; private set; } = price;
-        public long ProductTypeId { get; private set; } = productTypeId;
+        public Product(long id, DateTime createAt, bool isDeleted, string description,
+                        decimal price, long productTypeId) : base(id, createAt, isDeleted)
+        {
+            Description = description;
+            Price = price;
+            ProductTypeId = productTypeId;
+        }
+
+        public string Description { get; private set; }
+        public decimal Price { get; private set; }
+        public long ProductTypeId { get; private set; }
 
         //EF
         public ProductType ProductType { get; set; }
