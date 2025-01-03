@@ -17,5 +17,6 @@ namespace Estoque.Domain.Entities
 
         //EF
         public ProductType ProductType { get; set; }
+        public List<InventoryMovimentation>? Movimentations { get; set; }
     }
 }

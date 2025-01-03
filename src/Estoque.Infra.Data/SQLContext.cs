@@ -12,6 +12,7 @@ namespace Estoque.Infra.Data
         }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductType> ProductTypes { get; set; }
+        public DbSet<InventoryMovimentation> InventoryMovimentations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

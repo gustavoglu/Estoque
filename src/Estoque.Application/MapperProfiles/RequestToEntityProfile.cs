@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Estoque.Application.Requests.InventoryMovimentations;
 using Estoque.Application.Requests.Products;
 using Estoque.Application.Requests.ProductTypes;
 using Estoque.Domain.Entities;
@@ -38,6 +39,13 @@ namespace Estoque.Application.MapperProfiles
                                                     default,
                                                     default,
                                                     _.Description!));
+
+            CreateMap<InventoryMovimentationRequest, InventoryMovimentation>()
+                .ConstructUsing(_ => new InventoryMovimentation(default,
+                                               default,
+                                               _.Quantity,
+                                               _.ProductId,
+                                               _.Inc));
         }
     }
 }

@@ -1,20 +1,36 @@
 ﻿using Estoque.Presentation.Api.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Estoque.Presentation.Api.Middlewares
 {
-    public class ExceptionMiddleware : IMiddleware
+    public class ExceptionMiddleware
     {
-        public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+        private readonly RequestDelegate _next;
+        private readonly ILogger<ExceptionMiddleware> _logger;
+
+        public ExceptionMiddleware(
+            RequestDelegate next,
+            ILogger<ExceptionMiddleware> logger)
+        {
+            _next = next;
+            _logger = logger;
+        }
+
+        public async Task InvokeAsync(HttpContext context)
         {
             try
             {
-                await next.Invoke(context);
+                await _next(context);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                await context.Response
-                    .WriteAsJsonAsync(ApiResult.ErrorResult(ex.Message));
+                _logger.LogError(
+                    exception, "Exception occurred: {Message}", exception.Message);
+
+                context.Response.StatusCode =
+                    StatusCodes.Status500InternalServerError;
+
+                await context.Response.WriteAsJsonAsync(ApiResult.ErrorResult(null, exception.Message));
             }
         }
     }

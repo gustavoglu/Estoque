@@ -1,6 +1,7 @@
 ﻿using Estoque.Application.Requests.Products;
 using Estoque.Domain.Interfaces;
 using Estoque.Domain.Notifications;
+using Estoque.Infra.Data.Repositories;
 using Estoque.Presentation.Api.Helpers;
 using Estoque.Presentation.Api.ViewModels;
 using MediatR;
@@ -16,8 +17,8 @@ namespace Estoque.Presentation.Api.Endpoints
             var group = builder.MapGroup("/api/product").WithOpenApi();
 
 
-            group.MapPost("/", (IMediator mediator, 
-                                    INotificationHandler<DomainNotification> notifications, 
+            group.MapPost("/", (IMediator mediator,
+                                    INotificationHandler<DomainNotification> notifications,
                                     [FromBody] InsertProductRequest request) =>
             {
                 mediator.Send(request);
@@ -35,7 +36,7 @@ namespace Estoque.Presentation.Api.Endpoints
                     return Results.NotFound();
 
                 mediator.Send(request);
-                return  EndpointHelper.ResponseDefault(notifications);
+                return EndpointHelper.ResponseDefault(notifications);
             })
                 .Produces<ApiResult>(StatusCodes.Status200OK)
                 .Produces<ApiResult>(StatusCodes.Status400BadRequest);
@@ -74,6 +75,19 @@ namespace Estoque.Presentation.Api.Endpoints
             })
                 .Produces<ApiResult>(StatusCodes.Status200OK)
                 .Produces<ApiResult>(StatusCodes.Status400BadRequest);
+
+
+            group.MapGet("{id:long}/movimentation", (long id, IProductRepository repository,
+                                                        IInventoryMovimentationRepository inventoryMovimentationRepository) =>
+            {
+                var entity = repository.GetById(id);
+                if (entity is null)
+                    return Results.NotFound();
+
+                return Results.Ok(ApiResult.SuccessResult(inventoryMovimentationRepository.GetTotalByProductId(id)));
+            }).Produces<ApiResult>(StatusCodes.Status200OK)
+              .Produces<ApiResult>(StatusCodes.Status400BadRequest)
+              .Produces(StatusCodes.Status404NotFound); ;
 
         }
     }

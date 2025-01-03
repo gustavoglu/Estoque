@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Estoque.Application.Requests.InventoryMovimentations;
 using Estoque.Application.Requests.Products;
 using Estoque.Domain.Entities;
 using Estoque.Domain.Interfaces;
@@ -11,6 +12,7 @@ namespace Estoque.Application.Handlers
                                 IProductRepository repository,
                                 IProductTypeRepository productTypeRepository,
                                 IMediator mediator,
+                                INotificationHandler<DomainNotification> notifications,
                                 IMapper mapper) : IRequestHandler<InsertProductRequest>,
                                                         IRequestHandler<UpdateProductRequest>,
                                                         IRequestHandler<DeleteProductRequest>
@@ -30,9 +32,20 @@ namespace Estoque.Application.Handlers
 
         public Task Handle(InsertProductRequest request, CancellationToken cancellationToken)
         {
+            var notificationHandler = (DomainNotificationHandler)notifications;
+
             var entity = mapper.Map<Product>(request);
             repository.Insert(entity);
             uow.SaveChanges();
+
+            if (notificationHandler.HasNotification)
+                return Task.CompletedTask;
+
+            if (request.InventoryQuantity > 0)
+            {
+                mediator.Send(new InventoryMovimentationRequest() { ProductId = entity.Id, Inc = true, Quantity = request.InventoryQuantity });
+                uow.SaveChanges();
+            }
             return Task.CompletedTask;
         }
 
