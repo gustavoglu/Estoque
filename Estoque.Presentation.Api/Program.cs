@@ -9,29 +9,29 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSwaggerGen();
 builder.Services.AddOpenApi();
-builder.Services.AddScoped<DomainNotificationMiddleware>();
-builder.Services.AddScoped<ExceptionMiddleware>();
+builder.Services.AddCors(x => x.AddPolicy("*", pol => pol.AllowAnyMethod().AllowAnyOrigin().AllowAnyHeader().Build()));
+
+builder.Services.AddSingleton<ExceptionMiddleware>();
 
 NativeInjection.InjectServices(builder.Services, builder.Configuration);
 
 var app = builder.Build();
-
-
-app.UseMiddleware<ExceptionMiddleware>();
-//app.UseMiddleware<DomainNotificationMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+app.UseMiddleware<ExceptionMiddleware>();
+app.UseCors("*");
 app.UseSwagger();
 app.UseSwaggerUI();
-
 
 app.UseHttpsRedirection();
 
 app.MapProductEndpoints();
 app.MapProductTypeEndpoints();
+
+
 
 app.Run();
