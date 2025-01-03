@@ -1,7 +1,6 @@
 ﻿using Estoque.Application.Requests.Products;
 using Estoque.Domain.Interfaces;
 using Estoque.Domain.Notifications;
-using Estoque.Infra.Data.Repositories;
 using Estoque.Presentation.Api.Helpers;
 using Estoque.Presentation.Api.ViewModels;
 using MediatR;

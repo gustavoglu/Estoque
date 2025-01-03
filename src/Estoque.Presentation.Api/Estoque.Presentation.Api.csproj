@@ -28,8 +28,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Estoque.Application\Estoque.Application.csproj" />
-    <ProjectReference Include="..\src\Estoque.Infra.Crosscutting.IoC\Estoque.Infra.Crosscutting.IoC.csproj" />
+    <ProjectReference Include="..\Estoque.Application\Estoque.Application.csproj" />
+    <ProjectReference Include="..\Estoque.Infra.Crosscutting.IoC\Estoque.Infra.Crosscutting.IoC.csproj" />
   </ItemGroup>
 
 </Project>
